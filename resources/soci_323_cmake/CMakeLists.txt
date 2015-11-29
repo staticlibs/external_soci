@@ -47,3 +47,7 @@ add_library ( ${PROJECT_NAME} STATIC
 target_include_directories ( ${PROJECT_NAME} BEFORE PRIVATE 
         ${${PROJECT_NAME}_SOURCE_DIR}/src/core 
         ${${PROJECT_NAME}_SOURCE_DIR}/src/bckends/sqlite3 )
+if ( ${CMAKE_CXX_COMPILER_ID}x MATCHES "MSVCx" )
+    target_compile_definitions ( ${PROJECT_NAME} PRIVATE -D_CRT_SECURE_NO_WARNINGS )
+    target_compile_options ( ${PROJECT_NAME} PRIVATE "/wd4512" )
+endif ( )        
