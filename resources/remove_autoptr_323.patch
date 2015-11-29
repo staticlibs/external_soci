@@ -1,0 +1,68 @@
+diff --git a/src/core/rowset.h b/src/core/rowset.h
+index a2b7926..53e7dde 100644
+--- a/src/core/rowset.h
++++ b/src/core/rowset.h
+@@ -154,8 +154,8 @@ private:
+ 
+     unsigned int refs_;
+ 
+-    const std::auto_ptr<statement> st_;
+-    const std::auto_ptr<T> define_;
++    const std::unique_ptr<statement> st_;
++    const std::unique_ptr<T> define_;
+ 
+     // Non-copyable
+     rowset_impl(rowset_impl const &);
+diff --git a/src/core/session.cpp b/src/core/session.cpp
+index 27568bf..71eb72d 100644
+--- a/src/core/session.cpp
++++ b/src/core/session.cpp
+@@ -235,11 +235,11 @@ std::string session::get_query() const
+ }
+ 
+ void session::set_query_transformation_(
+-        std::auto_ptr<details::query_transformation_function> qtf)
++        std::unique_ptr<details::query_transformation_function> qtf)
+ {
+     if (isFromPool_)
+     {
+-        pool_->at(poolPosition_).set_query_transformation_(qtf);
++        pool_->at(poolPosition_).set_query_transformation_(std::move(qtf));
+     }
+     else
+     {
+diff --git a/src/core/session.h b/src/core/session.h
+index ff521b0..28c1add 100644
+--- a/src/core/session.h
++++ b/src/core/session.h
+@@ -40,7 +40,7 @@ class SOCI_DECL session
+ {
+ private:
+ 
+-    void set_query_transformation_(std::auto_ptr<details::query_transformation_function> qtf);
++    void set_query_transformation_(std::unique_ptr<details::query_transformation_function> qtf);
+ 
+ public:
+     session();
+@@ -77,7 +77,7 @@ public:
+     template <typename T>
+     void set_query_transformation(T callback)
+     {
+-        std::auto_ptr<details::query_transformation_function> qtf(new details::query_transformation<T>(callback));
++        std::unique_ptr<details::query_transformation_function> qtf(new details::query_transformation<T>(callback));
+         set_query_transformation_(qtf);
+ 
+         assert(qtf.get() == NULL);
+diff --git a/src/core/test/common-tests.h b/src/core/test/common-tests.h
+index bf1f8eb..ec79117 100644
+--- a/src/core/test/common-tests.h
++++ b/src/core/test/common-tests.h
+@@ -350,7 +350,7 @@ private:
+     backend_factory const &backEndFactory_;
+     std::string const connectString_;
+ 
+-typedef std::auto_ptr<table_creator_base> auto_table_creator;
++typedef std::unique_ptr<table_creator_base> auto_table_creator;
+ 
+ void test0()
+ {
