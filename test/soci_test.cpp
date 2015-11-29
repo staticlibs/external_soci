@@ -41,9 +41,19 @@ soci::backend_factory const& get(std::string const&) {
 
 void test_sqlite() {
     soci::session sql(soci::sqlite3, "mydb.sqlite");
-    int count;
-    sql << "select count(*) + 42 FROM sqlite_master", soci::into(count);
-    std::cout << count << std::endl;
+    soci::transaction tr(sql);
+    std::vector<int> vals_out;
+    vals_out.resize(1);
+    soci::statement st = (sql.prepare << "select count(*) + 42 FROM sqlite_master where (1 > 0)", 
+            soci::into(vals_out));
+    st.execute();
+    while (st.fetch()) {
+        std::vector<int>::iterator pos;
+        for (pos = vals_out.begin(); pos != vals_out.end(); ++pos) {
+            std::cout << *pos << std::endl;
+        }
+    }
+    tr.commit();
 }
 
 int main() {
