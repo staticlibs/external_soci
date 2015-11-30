@@ -25,13 +25,20 @@ set ( CMAKE_TOOLCHAIN_FILE ${STATICLIB_CMAKE}/toolchains/${STATICLIB_TOOLCHAIN}.
 project ( external_soci_test CXX )
 include ( ${STATICLIB_CMAKE}/staticlibs_common.cmake )
 
+# additional backends, disabled by default, enable for manual tests
+#set ( SOCI_ENABLE_ODBC ON CACHE BOOL "" )
+#set ( SOCI_ENABLE_POSTGRES ON CACHE BOOL "" )
+#set ( SOCI_POSTGRES_INCLUDE_DIR "/usr/include/postgresql" CACHE STRING "" )
+
 # dependencies
 if ( NOT DEFINED STATICLIB_DEPS )
-    set ( STATICLIB_DEPS ${CMAKE_CURRENT_LIST_DIR}/../../ CACHE INTERNAL "" )    
+    set ( STATICLIB_DEPS ${CMAKE_CURRENT_LIST_DIR}/../../ CACHE INTERNAL "" )
 endif ( )
-staticlib_add_subdirectory ( ${STATICLIB_DEPS}/external_sqlite )
+if ( NOT STATICLIB_TOOLCHAIN MATCHES "(linux|alpine)_[^_]+_[^_]+" )
+    staticlib_add_subdirectory ( ${STATICLIB_DEPS}/external_sqlite )
+endif ( )
 staticlib_add_subdirectory ( ${CMAKE_CURRENT_LIST_DIR}/../../external_soci )
-set ( ${PROJECT_NAME}_DEPS soci sqlite )
+set ( ${PROJECT_NAME}_DEPS soci sqlite3 )
 staticlib_pkg_check_modules ( ${PROJECT_NAME}_DEPS_PC REQUIRED ${PROJECT_NAME}_DEPS )
 
 # tests
@@ -40,5 +47,11 @@ set ( ${PROJECT_NAME}_TEST_LIBS ${${PROJECT_NAME}_DEPS_PC_LIBRARIES} )
 set ( ${PROJECT_NAME}_TEST_OPTS ${${PROJECT_NAME}_DEPS_PC_CFLAGS_OTHER} )
 staticlib_enable_testing ( ${PROJECT_NAME}_TEST_INCLUDES ${PROJECT_NAME}_TEST_LIBS ${PROJECT_NAME}_TEST_OPTS )
 if ( TARGET soci_test )
-    add_dependencies ( soci_test external_sqlite external_soci )
+    add_dependencies ( soci_test external_soci )
+    if ( SOCI_ENABLE_ODBC )
+        target_link_libraries ( soci_test odbc )
+    endif ( )
+    if ( SOCI_ENABLE_POSTGRES )
+        target_link_libraries ( soci_test pq )
+    endif ( )
 endif ( )

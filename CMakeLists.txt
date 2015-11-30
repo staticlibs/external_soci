@@ -23,6 +23,11 @@ include ( ${CMAKE_CURRENT_LIST_DIR}/resources/macros.cmake )
 
 # options
 option ( SOCI_REMOVE_AUTOPTR "Apply patch to version 3.2.3 to remove auto_ptr" ON )
+option ( SOCI_ENABLE_SQLITE3 "Enable SQlite3 backend" ON )
+option ( SOCI_ENABLE_ODBC "Enable SQlite3 backend" OFF )
+set ( SOCI_ODBC_INCLUDE_DIR "" CACHE STRING "Path to the ODBC headers" )
+option ( SOCI_ENABLE_POSTGRES "Enable PostgreSQL backend" OFF )
+set ( SOCI_POSTGRES_INCLUDE_DIR "" CACHE STRING "Path to the PostgreSQL headers" )
 
 # apply patch
 if ( SOCI_REMOVE_AUTOPTR )
@@ -34,7 +39,7 @@ if ( SOCI_REMOVE_AUTOPTR )
 endif ( )
 
 # dependencies
-set ( ${PROJECT_NAME}_DEPS sqlite )
+set ( ${PROJECT_NAME}_DEPS sqlite3 )
 external_soci_pkg_check_modules ( ${PROJECT_NAME}_DEPS_PC REQUIRED ${PROJECT_NAME}_DEPS )
 
 # soci library
@@ -51,7 +56,7 @@ if ( NOT DEFINED CMAKE_LIBRARY_OUTPUT_DIRECTORY )
     set ( CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR} )
 endif ( )
 set ( ${PROJECT_NAME}_MODULE soci )
-set ( ${PROJECT_NAME}_PC_CFLAGS "-I${CMAKE_CURRENT_LIST_DIR}/soci/src/core -I${CMAKE_CURRENT_LIST_DIR}/soci/src/backends/sqlite3" )
+set ( ${PROJECT_NAME}_PC_CFLAGS "-I${CMAKE_CURRENT_LIST_DIR}/soci/src/core" )
 set ( ${PROJECT_NAME}_PC_LIBS "-L${CMAKE_LIBRARY_OUTPUT_DIRECTORY} -lsoci" )
 configure_file ( ${CMAKE_CURRENT_LIST_DIR}/resources/pkg-config.in 
         ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/pkgconfig/soci.pc )

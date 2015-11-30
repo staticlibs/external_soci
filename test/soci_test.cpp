@@ -24,41 +24,40 @@
 #include <iostream>
 
 #include "soci.h"
-#include "soci-sqlite3.h"
 
-namespace soci{
-namespace dynamic_backends {
-
-void register_backend(std::string const&, soci::backend_factory const&) {
-}
-
-soci::backend_factory const& get(std::string const&) {
-    return *soci::factory_sqlite3();
-}
-
-}
-}
-
-void test_sqlite() {
-    soci::session sql(soci::sqlite3, "mydb.sqlite");
+void test_generic(const std::string& conn) {
+    soci::session sql{conn};
     soci::transaction tr(sql);
     std::vector<int> vals_out;
     vals_out.resize(1);
-    soci::statement st = (sql.prepare << "select count(*) + 42 FROM sqlite_master where (1 > 0)", 
+    soci::statement st = (sql.prepare << "select count(*) + 42", 
             soci::into(vals_out));
     st.execute();
     while (st.fetch()) {
-        std::vector<int>::iterator pos;
-        for (pos = vals_out.begin(); pos != vals_out.end(); ++pos) {
-            std::cout << *pos << std::endl;
+        for (auto el : vals_out) {
+            std::cout << el << std::endl;
         }
     }
     tr.commit();
 }
 
+void test_sqlite() {
+    test_generic("sqlite://mydb.sqlite");
+}
+
+void test_odbc() {
+    test_generic("odbc://DRIVER={FreeTDS};Server=127.0.0.1,1433;Database=master;UID=sa;PWD=root;");
+}
+
+void test_postgres() {
+    test_generic("postgresql://host=127.0.0.1 port=5432 dbname=postgres user=postgres password=postgres");
+}
+
 int main() {
     try {
         test_sqlite();
+//        test_odbc();
+//        test_postgres();
     } catch (const std::exception& e) {
         std::cout << e.what() << std::endl;
         return 1;
