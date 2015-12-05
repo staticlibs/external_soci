@@ -30,12 +30,13 @@ option ( SOCI_ENABLE_POSTGRES "Enable PostgreSQL backend" OFF )
 set ( SOCI_POSTGRES_INCLUDE_DIR "" CACHE STRING "Path to the PostgreSQL headers" )
 
 # apply patch
-if ( SOCI_REMOVE_AUTOPTR )
+if ( SOCI_REMOVE_AUTOPTR AND ( NOT DEFINED SOCI_REMOVE_AUTOPTR_APPLIED ) )
     message ( STATUS "Applying patch to soci-3.2.3 sources to remove auto_ptr" )
     execute_process ( COMMAND git reset --hard HEAD
             WORKING_DIRECTORY ${CMAKE_CURRENT_LIST_DIR}/soci )
     execute_process ( COMMAND git apply ${CMAKE_CURRENT_LIST_DIR}/resources/remove_autoptr_323.patch
             WORKING_DIRECTORY ${CMAKE_CURRENT_LIST_DIR}/soci )
+    set ( SOCI_REMOVE_AUTOPTR_APPLIED "" CACHE INTERNAL "" )
 endif ( )
 
 # dependencies
@@ -48,8 +49,10 @@ add_custom_target ( ${PROJECT_NAME} DEPENDS soci )
 if ( TARGET external_sqlite )
     add_dependencies ( soci external_sqlite )
 endif ( )
-target_include_directories ( soci BEFORE PRIVATE ${${PROJECT_NAME}_DEPS_PC_INCLUDE_DIRS} )
-
+if ( ( NOT STATICLIB_USE_DEPLIBS_CACHE ) OR
+        ( NOT EXISTS ${STATICLIB_DEPLIBS_CACHE_DIR}/${CMAKE_STATIC_LIBRARY_PREFIX}${PROJECT_NAME}${CMAKE_STATIC_LIBRARY_SUFFIX} ) )
+    target_include_directories ( soci BEFORE PRIVATE ${${PROJECT_NAME}_DEPS_PC_INCLUDE_DIRS} )
+endif ( )
 
 # pkg-config
 if ( NOT DEFINED CMAKE_LIBRARY_OUTPUT_DIRECTORY )
