@@ -50,7 +50,7 @@ if ( TARGET external_sqlite )
     add_dependencies ( soci external_sqlite )
 endif ( )
 if ( ( NOT STATICLIB_USE_DEPLIBS_CACHE ) OR
-        ( NOT EXISTS ${STATICLIB_DEPLIBS_CACHE_DIR}/${CMAKE_STATIC_LIBRARY_PREFIX}${PROJECT_NAME}${CMAKE_STATIC_LIBRARY_SUFFIX} ) )
+        ( NOT EXISTS ${STATICLIB_DEPLIBS_CACHE_DIR}/${CMAKE_STATIC_LIBRARY_PREFIX}soci${CMAKE_STATIC_LIBRARY_SUFFIX} ) )
     target_include_directories ( soci BEFORE PRIVATE ${${PROJECT_NAME}_DEPS_PC_INCLUDE_DIRS} )
 endif ( )
 
