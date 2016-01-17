@@ -44,8 +44,24 @@ How to build
 For Windows users ready-to-use binary version of `pkg-config` can be obtained from [tools_windows_pkgconfig](https://github.com/staticlibs/tools_windows_pkgconfig) repository.
 See [PkgConfig](https://github.com/staticlibs/wiki/wiki/PkgConfig) for Staticlibs-specific details about `pkg-config` usage.
 
-See [StaticlibsDependencies](https://github.com/staticlibs/wiki/wiki/StaticlibsDependencies) for more 
-details about dependency management with Staticlibs.
+[GNU Awk](https://www.gnu.org/software/gawk/) and [Tcl/Tk](http://www.tcl.tk/) are also required for building SQLite,
+Windows users can obtain ready-to-use distributions from [tools_windows_awk](https://github.com/staticlibs/tools_windows_awk)
+and [tools_windows_tcl](https://github.com/staticlibs/tools_windows_tcl) repositories.
+
+To build the library on Windows using Visual Studio 2013 Express run the following commands using
+Visual Studio development command prompt 
+(`C:\Program Files (x86)\Microsoft Visual Studio 12.0\Common7\Tools\Shortcuts\VS2013 x86 Native Tools Command Prompt`):
+
+    git clone --recursive https://github.com/staticlibs/external_sqlite.git
+    git clone --recursive https://github.com/staticlibs/external_soci.git
+    cd external_soci
+    mkdir build
+    cd build
+    cmake ..
+    msbuild external_soci.sln
+
+Cloning of [external_sqlite](https://github.com/staticlibs/external_sqlite) is not required on Linux - 
+system SQLite library will be used instead.
 
 See [StaticlibsToolchains](https://github.com/staticlibs/wiki/wiki/StaticlibsToolchains) for 
 more information about the toolchain setup and cross-compilation.
@@ -57,6 +73,11 @@ This project is released under the [Apache License 2.0](http://www.apache.org/li
 
 Changelog
 ---------
+
+**2016-01-17**
+
+ * version 3.8.8.2.5
+ * minor CMake changes
 
 **2015-11-30**
 

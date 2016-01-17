@@ -16,7 +16,7 @@ cmake_minimum_required ( VERSION 2.8.12 )
 
 # project
 project ( external_soci CXX C )
-set ( ${PROJECT_NAME}_STATICLIB_VERSION 3.2.3.0 )
+set ( ${PROJECT_NAME}_STATICLIB_VERSION 3.2.3.1 )
 set ( ${PROJECT_NAME}_DESCRIPTION "SOCI library build for Staticlibs" )
 set ( ${PROJECT_NAME}_URL https://github.com/staticlibs/external_soci )
 include ( ${CMAKE_CURRENT_LIST_DIR}/resources/macros.cmake )
@@ -39,6 +39,16 @@ if ( SOCI_REMOVE_AUTOPTR AND ( NOT DEFINED SOCI_REMOVE_AUTOPTR_APPLIED ) )
     set ( SOCI_REMOVE_AUTOPTR_APPLIED "" CACHE INTERNAL "" )
 endif ( )
 
+# standalone build
+if ( NOT DEFINED CMAKE_LIBRARY_OUTPUT_DIRECTORY )
+    set ( CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR} )
+endif ( )
+if ( NOT DEFINED STATICLIB_TOOLCHAIN )
+    if ( NOT ${CMAKE_SYSTEM_NAME} STREQUAL "Linux" ) # system dependencies implied on other platforms
+        staticlib_icu_add_subdirectory ( ${CMAKE_CURRENT_LIST_DIR}/../external_sqlite )
+    endif ( )
+endif ( )
+
 # dependencies
 set ( ${PROJECT_NAME}_DEPS sqlite3 )
 external_soci_pkg_check_modules ( ${PROJECT_NAME}_DEPS_PC REQUIRED ${PROJECT_NAME}_DEPS )
@@ -55,9 +65,6 @@ if ( ( NOT STATICLIB_USE_DEPLIBS_CACHE ) OR
 endif ( )
 
 # pkg-config
-if ( NOT DEFINED CMAKE_LIBRARY_OUTPUT_DIRECTORY )
-    set ( CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR} )
-endif ( )
 set ( ${PROJECT_NAME}_MODULE soci )
 set ( ${PROJECT_NAME}_PC_CFLAGS "-I${CMAKE_CURRENT_LIST_DIR}/soci/src/core" )
 set ( ${PROJECT_NAME}_PC_LIBS "-L${CMAKE_LIBRARY_OUTPUT_DIRECTORY} -lsoci" )
