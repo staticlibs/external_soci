@@ -45,7 +45,7 @@ if ( NOT DEFINED CMAKE_LIBRARY_OUTPUT_DIRECTORY )
 endif ( )
 if ( NOT DEFINED STATICLIB_TOOLCHAIN )
     if ( NOT ${CMAKE_SYSTEM_NAME} STREQUAL "Linux" ) # system dependencies implied on other platforms
-        staticlib_icu_add_subdirectory ( ${CMAKE_CURRENT_LIST_DIR}/../external_sqlite )
+        external_soci_add_subdirectory ( ${CMAKE_CURRENT_LIST_DIR}/../external_sqlite )
     endif ( )
 endif ( )
 
