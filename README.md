@@ -6,7 +6,7 @@ This project is a part of [Staticlibs](http://staticlibs.net/).
 This project contains a custom CMake script for the [SOCI](http://soci.sourceforge.net/) library.
 
 [SOCI GitHub repository](https://github.com/SOCI/soci) is used as a git submodule of this project.
-SOCI is pinned to version 3.2.0.
+SOCI is pinned to version 3.2.3.
 
 Link to the [documentation](http://soci.sourceforge.net/doc/3.2/).
 
@@ -76,10 +76,10 @@ Changelog
 
 **2016-01-17**
 
- * version 3.8.8.2.5
+ * version 3.2.3.1
  * minor CMake changes
 
 **2015-11-30**
 
- * version 3.8.2.0
+ * version 3.2.3.0
  * initial public version
