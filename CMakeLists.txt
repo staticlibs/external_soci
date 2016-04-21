@@ -23,13 +23,14 @@ include ( ${CMAKE_CURRENT_LIST_DIR}/resources/macros.cmake )
 
 # options
 option ( SOCI_REMOVE_AUTOPTR "Apply patch to version 3.2.3 to remove auto_ptr" ON )
+option ( SOCI_REMOVE_STRTOLL "Apply patch to version 3.2.3 to remove strtoll" ON )
 option ( SOCI_ENABLE_SQLITE3 "Enable SQlite3 backend" ON )
 option ( SOCI_ENABLE_ODBC "Enable SQlite3 backend" OFF )
 set ( SOCI_ODBC_INCLUDE_DIR "" CACHE STRING "Path to the ODBC headers" )
 option ( SOCI_ENABLE_POSTGRES "Enable PostgreSQL backend" OFF )
 set ( SOCI_POSTGRES_INCLUDE_DIR "" CACHE STRING "Path to the PostgreSQL headers" )
 
-# apply patch
+# apply patches
 if ( SOCI_REMOVE_AUTOPTR AND ( NOT DEFINED SOCI_REMOVE_AUTOPTR_APPLIED ) )
     message ( STATUS "Applying patch to soci-3.2.3 sources to remove auto_ptr" )
     execute_process ( COMMAND git reset --hard HEAD
@@ -37,6 +38,14 @@ if ( SOCI_REMOVE_AUTOPTR AND ( NOT DEFINED SOCI_REMOVE_AUTOPTR_APPLIED ) )
     execute_process ( COMMAND git apply ${CMAKE_CURRENT_LIST_DIR}/resources/remove_autoptr_323.patch
             WORKING_DIRECTORY ${CMAKE_CURRENT_LIST_DIR}/soci )
     set ( SOCI_REMOVE_AUTOPTR_APPLIED "" CACHE INTERNAL "" )
+endif ( )
+if ( SOCI_REMOVE_STRTOLL AND ( NOT DEFINED SOCI_REMOVE_STRTOLL_APPLIED ) )
+    message ( STATUS "Applying patch to soci-3.2.3 sources to remove strtoll" )
+    execute_process ( COMMAND git checkout src/backends/sqlite3/standard-into-type.cpp
+            WORKING_DIRECTORY ${CMAKE_CURRENT_LIST_DIR}/soci )
+    execute_process ( COMMAND git apply ${CMAKE_CURRENT_LIST_DIR}/resources/remove_strtoll_323.patch
+            WORKING_DIRECTORY ${CMAKE_CURRENT_LIST_DIR}/soci )
+    set ( SOCI_REMOVE_STRTOLL_APPLIED "" CACHE INTERNAL "" )
 endif ( )
 
 # standalone build
