@@ -5,8 +5,7 @@ This project is a part of [Staticlibs](http://staticlibs.net/).
 
 This project contains a custom CMake script for the [SOCI](http://soci.sourceforge.net/) library.
 
-[SOCI GitHub repository](https://github.com/SOCI/soci) is used as a git submodule of this project.
-SOCI is pinned to version 3.2.3.
+[SOCI repository imported from Fedora EPEL lookaside](https://github.com/ojdkbuild/lookaside_soci) is used as a git submodule of this project.
 
 Link to the [documentation](http://soci.sourceforge.net/doc/3.2/).
 
@@ -73,6 +72,11 @@ This project is released under the [Apache License 2.0](http://www.apache.org/li
 
 Changelog
 ---------
+
+**2016-10-29**
+
+ * version 3.2.3-2
+ * use pre-patched SOCI from Fedora EPEL lookaside
 
 **2016-01-17**
 
