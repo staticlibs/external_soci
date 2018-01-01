@@ -1,6 +1,9 @@
 SOCI library build for Staticlibs
 =================================
 
+[![travis](https://travis-ci.org/staticlibs/external_soci.svg?branch=master)](https://travis-ci.org/staticlibs/external_soci)
+[![appveyor](https://ci.appveyor.com/api/projects/status/github/staticlibs/external_soci?svg=true)](https://ci.appveyor.com/project/staticlibs/external-soci)
+
 This project is a part of [Staticlibs](http://staticlibs.net/).
 
 This project contains a custom CMake script for the [SOCI](http://soci.sourceforge.net/) library.
@@ -43,10 +46,6 @@ How to build
 For Windows users ready-to-use binary version of `pkg-config` can be obtained from [tools_windows_pkgconfig](https://github.com/staticlibs/tools_windows_pkgconfig) repository.
 See [PkgConfig](https://github.com/staticlibs/wiki/wiki/PkgConfig) for Staticlibs-specific details about `pkg-config` usage.
 
-[GNU Awk](https://www.gnu.org/software/gawk/) and [Tcl/Tk](http://www.tcl.tk/) are also required for building SQLite,
-Windows users can obtain ready-to-use distributions from [tools_windows_awk](https://github.com/staticlibs/tools_windows_awk)
-and [tools_windows_tcl](https://github.com/staticlibs/tools_windows_tcl) repositories.
-
 To build the library on Windows using Visual Studio 2013 Express run the following commands using
 Visual Studio development command prompt 
 (`C:\Program Files (x86)\Microsoft Visual Studio 12.0\Common7\Tools\Shortcuts\VS2013 x86 Native Tools Command Prompt`):
@@ -72,6 +71,11 @@ This project is released under the [Apache License 2.0](http://www.apache.org/li
 
 Changelog
 ---------
+
+**2018-01-01**
+
+ * version 3.2.3-3
+ * vs2017 support
 
 **2016-10-29**
 

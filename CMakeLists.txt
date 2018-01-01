@@ -16,14 +16,12 @@ cmake_minimum_required ( VERSION 2.8.12 )
 
 # project
 project ( external_soci CXX C )
-set ( ${PROJECT_NAME}_STATICLIB_VERSION 3.2.3-2 )
+set ( ${PROJECT_NAME}_STATICLIB_VERSION 3.2.3-3 )
 set ( ${PROJECT_NAME}_DESCRIPTION "SOCI library build for Staticlibs" )
 set ( ${PROJECT_NAME}_URL https://github.com/staticlibs/external_soci )
 include ( ${CMAKE_CURRENT_LIST_DIR}/resources/macros.cmake )
 
 # options
-option ( SOCI_REMOVE_AUTOPTR "Apply patch to version 3.2.3 to remove auto_ptr" ON )
-option ( SOCI_REMOVE_STRTOLL "Apply patch to version 3.2.3 to remove strtoll" ON )
 option ( SOCI_ENABLE_SQLITE3 "Enable SQlite3 backend" ON )
 option ( SOCI_ENABLE_ODBC "Enable SQlite3 backend" OFF )
 set ( SOCI_ODBC_INCLUDE_DIR "" CACHE STRING "Path to the ODBC headers" )
