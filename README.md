@@ -6,9 +6,8 @@ SOCI library build for Staticlibs
 
 This project is a part of [Staticlibs](http://staticlibs.net/).
 
-This project contains a custom CMake script for the [SOCI](http://soci.sourceforge.net/) library.
-
-[SOCI repository imported from Fedora EPEL lookaside](https://github.com/ojdkbuild/lookaside_soci) is used as a git submodule of this project.
+This project contains a custom CMake script for the [SOCI](http://soci.sourceforge.net/) library that
+can be used to build sources imported from [CentOS lookaside](https://github.com/staticlibs/lookaside_soci.git).
 
 Link to the [documentation](http://soci.sourceforge.net/doc/3.2/).
 
@@ -50,8 +49,9 @@ To build the library on Windows using Visual Studio 2013 Express run the followi
 Visual Studio development command prompt 
 (`C:\Program Files (x86)\Microsoft Visual Studio 12.0\Common7\Tools\Shortcuts\VS2013 x86 Native Tools Command Prompt`):
 
-    git clone --recursive https://github.com/staticlibs/external_sqlite.git
-    git clone --recursive https://github.com/staticlibs/external_soci.git
+    git clone https://github.com/staticlibs/external_sqlite.git
+    git clone https://github.com/staticlibs/external_soci.git
+    git clone https://github.com/staticlibs/lookaside_soci.git
     cd external_soci
     mkdir build
     cd build
@@ -71,6 +71,11 @@ This project is released under the [Apache License 2.0](http://www.apache.org/li
 
 Changelog
 ---------
+
+**2018-02-28**
+
+ * version 3.2.3-4
+ * drop submodule
 
 **2018-01-01**
 

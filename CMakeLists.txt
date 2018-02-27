@@ -16,7 +16,7 @@ cmake_minimum_required ( VERSION 2.8.12 )
 
 # project
 project ( external_soci CXX C )
-set ( ${PROJECT_NAME}_STATICLIB_VERSION 3.2.3-3 )
+set ( ${PROJECT_NAME}_STATICLIB_VERSION 3.2.3-4 )
 set ( ${PROJECT_NAME}_DESCRIPTION "SOCI library build for Staticlibs" )
 set ( ${PROJECT_NAME}_URL https://github.com/staticlibs/external_soci )
 include ( ${CMAKE_CURRENT_LIST_DIR}/resources/macros.cmake )
@@ -43,7 +43,7 @@ set ( ${PROJECT_NAME}_DEPS sqlite3 )
 external_soci_pkg_check_modules ( ${PROJECT_NAME}_DEPS_PC REQUIRED ${PROJECT_NAME}_DEPS )
 
 # soci library
-add_subdirectory ( ${CMAKE_CURRENT_LIST_DIR}/resources/soci_323_cmake ${CMAKE_CURRENT_BINARY_DIR}/soci )
+add_subdirectory ( ${CMAKE_CURRENT_LIST_DIR}/resources/soci_cmake ${CMAKE_CURRENT_BINARY_DIR}/soci )
 add_custom_target ( ${PROJECT_NAME} DEPENDS soci )
 if ( TARGET external_sqlite )
     add_dependencies ( soci external_sqlite )
@@ -55,8 +55,8 @@ endif ( )
 
 # pkg-config
 set ( ${PROJECT_NAME}_MODULE soci )
-set ( ${PROJECT_NAME}_PC_CFLAGS "-I${CMAKE_CURRENT_LIST_DIR}/soci/core" )
-set ( ${PROJECT_NAME}_PC_CFLAGS "${${PROJECT_NAME}_PC_CFLAGS} -I${CMAKE_CURRENT_LIST_DIR}/soci/backends" )
+set ( ${PROJECT_NAME}_PC_CFLAGS "-I${soci_LOOKASIDE_DIR}/core" )
+set ( ${PROJECT_NAME}_PC_CFLAGS "${${PROJECT_NAME}_PC_CFLAGS} -I${soci_LOOKASIDE_DIR}/backends" )
 set ( ${PROJECT_NAME}_PC_LIBS "-L${CMAKE_LIBRARY_OUTPUT_DIRECTORY} -lsoci" )
 configure_file ( ${CMAKE_CURRENT_LIST_DIR}/resources/pkg-config.in 
         ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/pkgconfig/soci.pc )

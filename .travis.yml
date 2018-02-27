@@ -64,6 +64,7 @@ before_script:
 # mac and android
   - git clone --recursive https://github.com/staticlibs/external_sqlite.git
 # all platforms
+  - git clone https://github.com/staticlibs/lookaside_soci.git
   - git clone https://github.com/staticlibs/cmake.git
 
 script:
