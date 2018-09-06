@@ -72,6 +72,11 @@ This project is released under the [Apache License 2.0](http://www.apache.org/li
 Changelog
 ---------
 
+**2018-09-06**
+
+ * version 3.2.3-5
+ * update lookaside sources with sqlite params fix
+
 **2018-02-28**
 
  * version 3.2.3-4
